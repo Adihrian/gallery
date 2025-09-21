@@ -1,0 +1,35 @@
+pipeline{
+    agent any
+
+    stages{
+        stage("Checkout"){
+            steps{
+                git branch: "master", url:"https://github.com/Adihrian/gallery.git"
+            }
+        }
+        stage("Install Dependancies"){
+            steps{
+                sh "npm install"
+            }
+        }
+        stage("Build & test"){
+            steps{
+                echo "No tests yet, skipping..."
+            }
+        }
+        stage("Deploy"){
+            steps{
+                sh "node server.js &"
+                echo "Deployed to Render"
+            }
+        }
+    }
+    post{
+        success{
+            echo "Pipeline completed succesfully"
+        }
+        failure{
+            echo "Pipeline failed"
+        }
+    }
+}
