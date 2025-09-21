@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-const config = require('./_config');
+require('dotenv').config();
 
 // Define routes
 let index = require('./routes/index');
@@ -10,12 +10,18 @@ let image = require('./routes/image');
 
 // connecting the database
 const env = process.env.NODE_ENV || 'development';
+const mongoURI = process.env.MONGO_URI;
 
-mongoose.connect(config.mongoURI[env], {
+if (!mongoURI) {
+    console.error("MongoDB connection string is missing. Please set MONGO_URI in your .env file.");
+    process.exit(1);
+}
+
+mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }, (err) => {
-    if (err) console.log(err);
+    if (err) console.error("MongoDB connection error:", err);
 });
 
 
