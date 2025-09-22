@@ -1,43 +1,35 @@
-pipeline {
-    agent {
-        docker { image 'node:20' } // Node.js + npm preinstalled
-    }
+pipeline{
+    agent any
 
-    stages {
-        stage("Checkout") {
-            steps {
-                echo "Checking out code from GitHub..."
-                git branch: "master", url: "https://github.com/Adihrian/gallery.git"
+    stages{
+        stage("Checkout Code"){
+            steps{
+                echo "Checking out code from GitHub"
+                git branch: "master", url:"https://github.com/Adihrian/gallery.git"
             }
         }
-
-        stage("Install Dependencies") {
-            steps {
-                echo "Installing Node.js dependencies..."
+        stage("Install Dependencies"){
+            steps{
                 sh "npm install"
             }
         }
-
-        stage("Build & Test") {
-            steps {
+        stage("Build & test"){
+            steps{
                 echo "No tests yet, skipping..."
             }
         }
-
-        stage("Deploy") {
-            steps {
-                echo "Starting server..."
+        stage("Deploy"){
+            steps{
                 sh "node server.js &"
-                echo "Deployed to Render (Milestone 2)"
+                echo "Deployed to Render"
             }
         }
     }
-
-    post {
-        success {
-            echo "Pipeline completed successfully"
+    post{
+        success{
+            echo "Pipeline completed succesfully"
         }
-        failure {
+        failure{
             echo "Pipeline failed"
         }
     }
