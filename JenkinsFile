@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         NODE_ENV = "test"
-        MONGO_URI = "mongodb+srv://adih123:adih123@gallerycluster.cf7kn7q.mongodb.net/darkroom-test?retryWrites=true&w=majority"
+        MONGO_URI = credentials('MONGO_URI_TEST')  
     }
 
     stages {
