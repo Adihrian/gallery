@@ -16,6 +16,3 @@ mongoose.connect(config.mongoURI[env], {
 .catch((err) => {
     console.error('Error connecting to MongoDB:', err.message);
 });
-
-
-
