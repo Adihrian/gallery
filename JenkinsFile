@@ -22,7 +22,7 @@ pipeline {
             steps {
                 // Using Jenkins credentials for MONGO_URI
                 withCredentials([string(credentialsId: 'mongo-uri', variable: 'MONGO_URI')]) {
-                    sh "npm test"
+                    sh "npx mocha --exit"
                 }
             }
         }
