@@ -17,8 +17,3 @@ mongoose.connect(config.mongoURI[env], {
     console.error('Error connecting to MongoDB:', err.message);
 });
 
-
-
-
-
-
