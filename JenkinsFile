@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NODE_ENV = "test"
+        NODE_ENV = "test" // Change to "development" or "production" if needed
     }
 
     stages {
@@ -14,24 +14,30 @@ pipeline {
 
         stage("Install Dependencies") {
             steps {
+                // Include dev dependencies so Mocha is installed
                 sh "npm install --include=dev"
             }
         }
 
         stage("Run Tests") {
             steps {
-                // Using Jenkins credentials for MONGO_URI
-                withCredentials([string(credentialsId: 'mongo-uri', variable: 'MONGO_URI')]) {
-                    sh "npx mocha --exit"
+                // Use Jenkins credential for test Mongo URI
+                withCredentials([string(credentialsId: 'mongo-test-uri', variable: 'MONGO_TEST_URI')]) {
+                    sh "echo Using NODE_ENV=$NODE_ENV"
+                    sh "npm test"
                 }
             }
         }
 
         stage("Deploy") {
+            when {
+                expression { return env.NODE_ENV != "test" } // Skip deploy if test
+            }
             steps {
-                withCredentials([string(credentialsId: 'mongo-uri', variable: 'MONGO_URI')]) {
-                    sh "node server.js &"
-                    echo "Deployed to Render"
+                // Use production Mongo URI if deploying
+                withCredentials([string(credentialsId: 'mongo-prod-uri', variable: 'MONGO_PROD_URI')]) {
+                    sh "NODE_ENV=production node server.js &"
+                    echo "Deployed to production"
                 }
             }
         }
