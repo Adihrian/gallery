@@ -1,3 +1,16 @@
+<<<<<<< HEAD
 node_modules/
 .env
 _config.js
+=======
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+_config.js
+>>>>>>> test
